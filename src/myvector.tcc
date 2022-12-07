@@ -38,7 +38,8 @@ MyVector<T>::~MyVector()
 template<typename T>
 T& MyVector<T>::operator [](std::size_t idx)
 {
-    assert((idx >= 0) && (idx < _size));
+    assert(idx >= 0);
+    assert(idx < _size);
     return _array[idx];
 }
 
@@ -66,6 +67,11 @@ void MyVector<T>::resize(std::size_t new_size, T default_value)
 
 template<typename T>
 void MyVector<T>::resize_memory(const std::size_t new_size) {
+    if (_array == nullptr) {
+        _allocated_memory = 1;
+        _size = 1;
+        _array = new T[_allocated_memory];
+    }
     if ((new_size * 2 > _allocated_memory) && (new_size <= _allocated_memory))
         return;
 
@@ -112,7 +118,7 @@ void MyVector<T>::insert(std::size_t start_index, std::size_t count_elements, T 
         _array[i + count_elements] = _array[i];
     }
     for (int i=0; i < count_elements; i++) {
-        _array[i] = default_element;
+        _array[start_index+i] = default_element;
     }
 }
 

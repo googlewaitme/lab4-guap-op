@@ -1,12 +1,88 @@
-#include <iostream>
+//
+// Created by bulat on 02.12.22.
+//
+
 #include "myvector.h"
+#include "GnomSort.hpp"
+#include "ShakeSort.hpp"
+#include <random>
 
-void test();
+int randint(int max_size)
+{
+    return std::rand() % max_size;
+}
 
-int main() {
-    test();
 
-    return 0;
+void generateTest(MyVector<int> & vec, std::size_t vector_size, int max_integer=100)
+{
+    vec.clear();
+    vec.resize(vector_size);
+
+    int randi;
+    for (int i=0; i < vector_size; i++) {
+        randi = randint(max_integer);
+        vec[i] = randi;
+    }
+}
+
+
+void run_tests(MyVector<int> &vec)
+{
+    int n = vec.size();
+    clock_t start_time, gnom_time, shake_time;
+    MyVector<int> vec1(n);
+    MyVector<int> vec2(n);
+    for (int i=0; i<vec.size(); i++) {
+        vec1[i] = vec[i];
+        vec2[i] = vec[i];
+    }
+
+    start_time = clock();
+    GnomSort(vec1);
+    gnom_time = clock() - start_time;
+
+    start_time= clock();
+    ShakeSort(vec2);
+    shake_time = clock() - start_time;
+    std::cout << "count elements: " << vec.size() << std::endl;
+    std::cout << "gnom_time: " << gnom_time << std::endl;
+    std::cout << "shake_time: " << shake_time << std::endl;
+}
+
+
+void testGnomSort()
+{
+    int n = 100;
+    MyVector<int> vec(n);
+
+    for (int i=0; i < n; i++) {
+        vec[i] = randint(10);
+    }
+    // vec.print_data();
+    GnomSort(vec);
+    // vec.print_data();
+    for (int i=0; i < n-1; i++) {
+        assert(vec[i] <= vec[i+1]);
+    }
+    std::cout << "GNOM SORT IS RIGHT" << std::endl;
+}
+
+
+void testShakeSort()
+{
+    int n = 100;
+    MyVector<int> vec(n);
+
+    for (int i=0; i < n; i++) {
+        vec[i] = randint(10);
+    }
+    // vec.print_data();
+    ShakeSort(vec);
+    // vec.print_data();
+    for (int i=0; i < n-1; i++) {
+        assert(vec[i] <= vec[i+1]);
+    }
+    std::cout << "SHAKE SORT IS RIGHT" << std::endl;
 }
 
 
