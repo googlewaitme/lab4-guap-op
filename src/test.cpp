@@ -2,6 +2,7 @@
 // Created by bulat on 02.12.22.
 //
 
+#include <chrono>
 #include "myvector.h"
 #include "GnomSort.hpp"
 #include "ShakeSort.hpp"
@@ -29,7 +30,6 @@ void generateTest(MyVector<int> & vec, std::size_t vector_size, int max_integer=
 void run_tests(MyVector<int> &vec)
 {
     int n = vec.size();
-    clock_t start_time, gnom_time, shake_time;
     MyVector<int> vec1(n);
     MyVector<int> vec2(n);
     for (int i=0; i<vec.size(); i++) {
@@ -37,16 +37,23 @@ void run_tests(MyVector<int> &vec)
         vec2[i] = vec[i];
     }
 
-    start_time = clock();
-    GnomSort(vec1);
-    gnom_time = clock() - start_time;
+    int gnom_swaps = 0, shake_swaps=0;
+    int gnom_ifes = 0, shake_ifes=0;
 
-    start_time= clock();
-    ShakeSort(vec2);
-    shake_time = clock() - start_time;
+
+    auto begin = std::chrono::steady_clock::now();
+    GnomSort(vec1, gnom_swaps, gnom_ifes);
+    auto end = std::chrono::steady_clock::now();
+    auto gnom_time = std::chrono::duration_cast<std::chrono::microseconds>(end-begin);
+
+    begin = std::chrono::steady_clock::now();
+    ShakeSort(vec2, shake_swaps, shake_ifes);
+    end = std::chrono::steady_clock::now();
+    auto shake_time = std::chrono::duration_cast<std::chrono::microseconds>(end-begin);
+
     std::cout << "count elements: " << vec.size() << std::endl;
-    std::cout << "gnom_time: " << gnom_time << std::endl;
-    std::cout << "shake_time: " << shake_time << std::endl;
+    std::cout << "gnom " << gnom_time.count() << " " << gnom_swaps << " " << gnom_ifes << std::endl;
+    std::cout << "shake " << shake_time.count() << " " << shake_swaps << " " << shake_ifes << std::endl;
 }
 
 
@@ -59,7 +66,8 @@ void testGnomSort()
         vec[i] = randint(10);
     }
     // vec.print_data();
-    GnomSort(vec);
+    int ifes_count=0, swap_count=0;
+    GnomSort(vec, ifes_count, swap_count);
     // vec.print_data();
     for (int i=0; i < n-1; i++) {
         assert(vec[i] <= vec[i+1]);
@@ -77,7 +85,8 @@ void testShakeSort()
         vec[i] = randint(10);
     }
     // vec.print_data();
-    ShakeSort(vec);
+    int ifes_count=0, swap_count=0;
+    ShakeSort(vec, ifes_count, swap_count);
     // vec.print_data();
     for (int i=0; i < n-1; i++) {
         assert(vec[i] <= vec[i+1]);

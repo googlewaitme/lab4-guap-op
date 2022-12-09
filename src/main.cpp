@@ -6,9 +6,9 @@
 
 int main() {
     std::srand(std::time(nullptr));
-    test();
-    testShakeSort();
-    testGnomSort();
+    // test();
+    // testShakeSort();
+    //testGnomSort();
 
 
     std::vector<int> tests={100, 1000, 10000, 20000, 40000};

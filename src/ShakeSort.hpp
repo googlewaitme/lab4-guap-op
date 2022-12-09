@@ -8,7 +8,7 @@
 #include "myvector.h"
 
 template<typename T>
-void ShakeSort(MyVector<T> &vec);
+void ShakeSort(MyVector<T> &vec, int &changes_count, int &ifes_count);
 
 #include "ShakeSort.tcc"
 

@@ -9,7 +9,7 @@
 
 
 template <typename T>
-void GnomSort(MyVector<T> &vec);
+void GnomSort(MyVector<T> &vec, int &changes_count, int &ifes_count);
 
 
 #include "GnomSort.tcc"
